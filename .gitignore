@@ -1,0 +1,6 @@
+/packages
+/.vs
+/src/GroupDocs.Viewer.WebForms.csproj.user
+/src/bin
+/src/obj
+/App_Data/temp
