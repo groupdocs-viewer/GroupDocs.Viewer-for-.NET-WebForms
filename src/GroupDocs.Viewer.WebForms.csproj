@@ -221,7 +221,6 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Viewer.aspx.cs">
       <DependentUpon>Viewer.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Viewer.aspx.designer.cs">
       <DependentUpon>Viewer.aspx</DependentUpon>
