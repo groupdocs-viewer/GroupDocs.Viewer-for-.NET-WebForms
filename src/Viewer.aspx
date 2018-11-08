@@ -8,7 +8,8 @@
 <head>
     <meta charset="utf-8" />
     <title>Viewer for .NET WebForms</title>
-    <link type="text/css" rel="stylesheet" href="resources/common/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="resources/common/css/all.min.css">
+    <link type="text/css" rel="stylesheet" href="resources/common/css/v4-shims.min.css">
     <link type="text/css" rel="stylesheet" href="resources/common/css/swiper.min.css">
     <link type="text/css" rel="stylesheet" href="resources/common/css/circle-progress.css" />
     <link type="text/css" rel="stylesheet" href="resources/viewer/css/viewer.css" />
@@ -27,7 +28,7 @@
             defaultDocument: '<%=config.Viewer.DefaultDocument%>',
             htmlMode: <%= config.Viewer.isHtmlMode.ToString().ToLowerInvariant()%>,
             preloadPageCount: <%= config.Viewer.PreloadPageCount%>,
-            zoom : <%= config.Viewer.isZoom.ToString().ToLowerInvariant()%>,
+            zoom: <%= config.Viewer.isZoom.ToString().ToLowerInvariant()%>,
             pageSelector: <%= config.Common.isPageSelector.ToString().ToLowerInvariant()%>,
             search: <%= config.Viewer.isSearch.ToString().ToLowerInvariant()%>,
             thumbnails: <%= config.Viewer.isThumbnails.ToString().ToLowerInvariant()%>,
