@@ -2,6 +2,8 @@
 # GroupDocs.Viewer for .NET Web.Forms Example
 ###### version 1.12.0
 
+[![Build status](https://ci.appveyor.com/api/projects/status/awgrd3a91i34y4oh/branch/master?svg=true)](https://ci.appveyor.com/project/egorovpavel/groupdocs-viewer-for-net-webforms/branch/master)
+
 
 ## System Requirements
 - .NET Framework 4.5
