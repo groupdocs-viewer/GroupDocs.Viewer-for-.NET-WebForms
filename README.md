@@ -1,4 +1,4 @@
-![Alt text](https://raw.githubusercontent.com/groupdocs-viewer/GroupDocs.Viewer-for-.NET-webforms/development/src/Resources/viewer/images/banner.png "GroupDocs.Viewer")
+![Alt text](https://raw.githubusercontent.com/groupdocs-viewer/groupdocs-viewer.github.io/master/resources/image/banner.png "GroupDocs.Viewer")
 # GroupDocs.Viewer for .NET Web.Forms Example
 ###### version 1.12.0
 
