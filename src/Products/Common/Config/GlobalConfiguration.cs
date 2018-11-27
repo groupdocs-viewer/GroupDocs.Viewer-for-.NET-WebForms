@@ -8,7 +8,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
     public class GlobalConfiguration
     {
         public ServerConfiguration Server;
-        public ApplicationConfiguration Application;      
+        public ApplicationConfiguration Application;
         public ViewerConfiguration Viewer;
         public CommonConfiguration Common;
 
@@ -18,7 +18,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
         public GlobalConfiguration()
         {
             Server = new ServerConfiguration();
-            Application = new ApplicationConfiguration();           
+            Application = new ApplicationConfiguration();          
             Viewer = new ViewerConfiguration();
             Common = new CommonConfiguration();
         }
