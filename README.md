@@ -1,6 +1,6 @@
 ![Alt text](https://raw.githubusercontent.com/groupdocs-viewer/groupdocs-viewer.github.io/master/resources/image/banner.png "GroupDocs.Viewer")
 # GroupDocs.Viewer for .NET Web.Forms Example
-###### version 1.12.0
+###### version 1.13.0
 
 [![Build status](https://ci.appveyor.com/api/projects/status/awgrd3a91i34y4oh/branch/master?svg=true)](https://ci.appveyor.com/project/egorovpavel/groupdocs-viewer-for-net-webforms/branch/master)
 
@@ -53,11 +53,10 @@ https://www.youtube.com/watch?v=NnZaMNUC6o0
 2. Extract/Copy GroupDocs.Viewer for .NET Web.Forms Example to working directory.
 3. Navigate to GroupDocs.Viewer for .NET Web.Forms Example root directory.
 4. Open project in Visual Studio.
-5. Update params in `Web.config` to meet your requirements.
+5. Update common parameters in `web.config` and example related properties in the 'configuration.yml' to meet your requirements.
 6. Start solution.
 7. Go to `http://localhost:{PORT}/viewer/`.
 PORT - port number specified in `Web.config` (by default http://localhost:8080/viewer/).
-
 
 ## Resources
 - **Website:** [www.groupdocs.com](http://www.groupdocs.com)

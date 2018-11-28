@@ -1,7 +1,6 @@
 ﻿using GroupDocs.Viewer.WebForms.Products.Common.Entity.Web;
 using System;
 using System.IO;
-using System.Web;
 
 namespace GroupDocs.Viewer.WebForms.Products.Common.Resources
 {
