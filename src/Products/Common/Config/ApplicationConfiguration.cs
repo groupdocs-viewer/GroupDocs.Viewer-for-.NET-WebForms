@@ -1,6 +1,5 @@
 ﻿using GroupDocs.Viewer.WebForms.Products.Common.Util.Parser;
 using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Diagnostics;
