@@ -1,6 +1,6 @@
 ![Alt text](https://raw.githubusercontent.com/groupdocs-viewer/groupdocs-viewer.github.io/master/resources/image/banner.png "GroupDocs.Viewer")
 # GroupDocs.Viewer for .NET Web.Forms Example
-###### version 1.13.0
+###### version 1.14.0
 
 [![Build status](https://ci.appveyor.com/api/projects/status/awgrd3a91i34y4oh/branch/master?svg=true)](https://ci.appveyor.com/project/egorovpavel/groupdocs-viewer-for-net-webforms/branch/master)
 
