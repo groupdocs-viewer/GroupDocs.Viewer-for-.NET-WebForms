@@ -17,8 +17,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
         /// <summary>
         /// Get server configuration section of the web.config
         /// </summary>
-        public ServerConfiguration()
-        {
+        public ServerConfiguration() {
             YamlParser parser = new YamlParser();
             dynamic configuration = parser.GetConfiguration("server");
             ConfigurationValuesGetter valuesGetter = new ConfigurationValuesGetter(configuration);

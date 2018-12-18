@@ -1,13 +1,13 @@
-﻿using GroupDocs.Viewer.Config;
+﻿using GroupDocs.Viewer.WebForms.Products.Common.Entity.Web;
+using GroupDocs.Viewer.WebForms.Products.Common.Resources;
+using GroupDocs.Viewer.WebForms.Products.Viewer.Entity.Web;
+using GroupDocs.Viewer.Config;
 using GroupDocs.Viewer.Converter.Options;
 using GroupDocs.Viewer.Domain;
 using GroupDocs.Viewer.Domain.Containers;
 using GroupDocs.Viewer.Domain.Options;
 using GroupDocs.Viewer.Exception;
 using GroupDocs.Viewer.Handler;
-using GroupDocs.Viewer.WebForms.Products.Common.Entity.Web;
-using GroupDocs.Viewer.WebForms.Products.Common.Resources;
-using GroupDocs.Viewer.WebForms.Products.Viewer.Entity.Web;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,8 +30,8 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         private static Common.Config.GlobalConfiguration globalConfiguration;
         private static ViewerHtmlHandler viewerHtmlHandler = null;
         private static ViewerImageHandler viewerImageHandler = null;
-        public static string PASSWORD_REQUIRED = "Password Required";
-        public static string INCORRECT_PASSWORD = "Incorrect password";
+        public static readonly string PASSWORD_REQUIRED = "Password Required";
+        public static readonly string INCORRECT_PASSWORD = "Incorrect password";
 
         /// <summary>
         /// Constructor
@@ -52,16 +52,14 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 fontsDirectory.Add(globalConfiguration.Viewer.FontsDirectory);
             }
             config.FontDirectories = fontsDirectory;
-            License license = new License();
-            license.SetLicense(globalConfiguration.Application.LicensePath);
             if (globalConfiguration.Viewer.isHtmlMode)
             {
-                // initialize total instance for the HTML mode
+                // initialize Viewer instance for the HTML mode
                 viewerHtmlHandler = new ViewerHtmlHandler(config);
             }
             else
             {
-                // initialize total instance for the Image mode
+                // initialize Viewer instance for the Image mode
                 viewerImageHandler = new ViewerImageHandler(config);
             }
         }
@@ -72,7 +70,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>List of files and directories</returns>
         [HttpPost]
-        [Route("loadFileTree")]
+       [Route("loadFileTree")]
         public HttpResponseMessage loadFileTree(PostedDataEntity postedData)
         {
             string relDirPath = "";
@@ -131,25 +129,22 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Document info object</returns>
         [HttpPost]
-        [Route("loadDocumentDescription")]
+       [Route("loadDocumentDescription")]
         public HttpResponseMessage LoadDocumentDescription(PostedDataEntity postedData)
         {
             string password = "";
-            string documentGuid = "";
             try
             {
-                // get request body
-                if (postedData != null)
+
+                // get/set parameters
+                string documentGuid = postedData.guid;
+                password = postedData.password;
+                // check if documentGuid contains path or only file name
+                if (!Path.IsPathRooted(documentGuid))
                 {
-                    // get/set parameters
-                    documentGuid = postedData.guid;
-                    password = postedData.password;
-                    // check if documentGuid contains path or only file name
-                    if (!Path.IsPathRooted(documentGuid))
-                    {
-                        documentGuid = globalConfiguration.Viewer.FilesDirectory + "/" + documentGuid;
-                    }
+                    documentGuid = globalConfiguration.Viewer.FilesDirectory + "/" + documentGuid;
                 }
+
                 DocumentInfoContainer documentInfoContainer = new DocumentInfoContainer();
                 // get document info options
                 DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions(documentGuid);
@@ -157,21 +152,12 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 documentInfoOptions.Password = password;
                 // get document info container               
                 documentInfoContainer = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions);
-                List<DocumentDescriptionEntity> pagesDescription = new List<DocumentDescriptionEntity>();
-                // get info about each document page
-                for (int i = 0; i < documentInfoContainer.Pages.Count; i++)
-                {
-                    //initiate custom Document description object
-                    DocumentDescriptionEntity description = new DocumentDescriptionEntity();
-
-                    // set current page info for result
-                    description.height = documentInfoContainer.Pages[i].Height;
-                    description.width = documentInfoContainer.Pages[i].Width;
-                    description.number = i + 1;
-                    pagesDescription.Add(description);
-                }
+                List<PageDescriptionEntity> pages = GetPageDescriptionEntities(documentInfoContainer.Pages);
+                LoadDocumentEntity loadDocumentEntity = new LoadDocumentEntity();
+                loadDocumentEntity.guid = documentGuid;
+                loadDocumentEntity.pages = pages;
                 // return document description
-                return Request.CreateResponse(HttpStatusCode.OK, pagesDescription);
+                return Request.CreateResponse(HttpStatusCode.OK, loadDocumentEntity);
             }
             catch (InvalidPasswordException ex)
             {
@@ -200,7 +186,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Document page object</returns>
         [HttpPost]
-        [Route("loadDocumentPage")]
+       [Route("loadDocumentPage")]
         public HttpResponseMessage LoadDocumentPage(PostedDataEntity postedData)
         {
             try
@@ -273,7 +259,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Document page number to rotate and rotation angle</param>
         /// <returns>Rotated document page object</returns>
         [HttpPost]
-        [Route("rotateDocumentPages")]
+       [Route("rotateDocumentPages")]
         public HttpResponseMessage RotateDocumentPages(PostedDataEntity postedData)
         {
             try
@@ -326,7 +312,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="path">Path of the document to download</param>
         /// <returns>Document stream as attachement</returns>
         [HttpGet]
-        [Route("downloadDocument")]
+       [Route("downloadDocument")]
         public HttpResponseMessage DownloadDocument(string path)
         {
             if (!string.IsNullOrEmpty(path))
@@ -351,7 +337,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Uploaded document object</returns>
         [HttpPost]
-        [Route("uploadDocument")]
+       [Route("uploadDocument")]
         public HttpResponseMessage UploadDocument()
         {
             try
@@ -376,7 +362,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                             }
                             else
                             {
-                                fileSavePath = new Resources().GetFreeFileName(documentStoragePath, httpPostedFile.FileName);
+                                fileSavePath = Resources.GetFreeFileName(documentStoragePath, httpPostedFile.FileName);
                             }
 
                             // Save the uploaded file to "UploadedFiles" folder
@@ -398,7 +384,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                         }
                         else
                         {
-                            fileSavePath = new Resources().GetFreeFileName(documentStoragePath, fileName);
+                            fileSavePath = Resources.GetFreeFileName(documentStoragePath, fileName);
                         }
                         // Download the Web resource and save it into the current filesystem folder.
                         client.DownloadFile(url, fileSavePath);
@@ -425,6 +411,21 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             {
                 return viewerImageHandler;
             }
+        }
+
+        private static List<PageDescriptionEntity> GetPageDescriptionEntities(List<PageData> containerPages)
+        {
+            List<PageDescriptionEntity> pages = new List<PageDescriptionEntity>();
+            foreach (PageData page in containerPages)
+            {
+                PageDescriptionEntity pageDescriptionEntity = new PageDescriptionEntity();
+                pageDescriptionEntity.number = page.Number;
+                pageDescriptionEntity.angle = page.Angle;
+                pageDescriptionEntity.height = page.Height;
+                pageDescriptionEntity.width = page.Width;
+                pages.Add(pageDescriptionEntity);
+            }
+            return pages;
         }
     }
 }

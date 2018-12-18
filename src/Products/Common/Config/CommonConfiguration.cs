@@ -10,7 +10,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
     /// </summary>
     public class CommonConfiguration : ConfigurationSection
     {
-        public bool isPageSelector { get; set; }
+        public bool isPageSelector { get; set; }    
         public bool isDownload { get; set; }
         public bool isUpload { get; set; }
         public bool isPrint { get; set; }

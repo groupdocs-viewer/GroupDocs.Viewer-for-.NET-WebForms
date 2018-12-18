@@ -1,8 +1,10 @@
 ﻿using GroupDocs.Viewer.WebForms.Products.Common.Config;
 using GroupDocs.Viewer.WebForms.Products.Common.Util.Parser;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace GroupDocs.Viewer.WebForms.Products.Viewer.Config
 {
@@ -20,7 +22,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Config
         public bool isThumbnails = true;
         public bool isRotate = true;
         public bool isHtmlMode = true;
-        public bool Cache = true;
+        public bool Cache = true;       
 
         /// <summary>
         /// Constructor
@@ -37,7 +39,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Config
             {
                 FilesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, FilesDirectory);
                 if (!Directory.Exists(FilesDirectory))
-                {
+                {                   
                     Directory.CreateDirectory(FilesDirectory);
                 }
             }
@@ -58,6 +60,6 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Config
                 && path.IndexOfAny(System.IO.Path.GetInvalidPathChars().ToArray()) == -1
                 && Path.IsPathRooted(path)
                 && !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
-        }
+        }        
     }
 }
