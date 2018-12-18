@@ -1,8 +1,11 @@
 ﻿using GroupDocs.Viewer.WebForms.Products.Common.Util.Parser;
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Diagnostics;
 
 namespace GroupDocs.Viewer.WebForms.Products.Common.Config
 {
@@ -39,7 +42,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
                 }
                 LicensePath = license;
                 if (!File.Exists(LicensePath))
-                {
+                {                    
                     Debug.WriteLine("License file path is incorrect, launched in trial mode");
                     LicensePath = "";
                 }

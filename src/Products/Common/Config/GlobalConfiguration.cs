@@ -9,16 +9,16 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
     {
         public ServerConfiguration Server;
         public ApplicationConfiguration Application;
-        public ViewerConfiguration Viewer;
         public CommonConfiguration Common;
+        public ViewerConfiguration Viewer;
 
         /// <summary>
         /// Get all configurations
         /// </summary>
         public GlobalConfiguration()
-        {
+        {            
             Server = new ServerConfiguration();
-            Application = new ApplicationConfiguration();          
+            Application = new ApplicationConfiguration();
             Viewer = new ViewerConfiguration();
             Common = new CommonConfiguration();
         }
