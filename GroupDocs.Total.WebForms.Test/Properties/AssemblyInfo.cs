@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("GroupDocs.Viewer.MVC.Test")]
+[assembly: AssemblyTitle("GroupDocs.Viewer.WebForms.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GroupDocs.Viewer.MVC.Test")]
+[assembly: AssemblyProduct("GroupDocs.Viewer.WebForms.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("c8f2edb6-bd6c-465f-b59f-2cea33bd7fe6")]
+[assembly: Guid("c0e13ec1-3c31-4d1c-ad67-a68d228fe8c9")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //

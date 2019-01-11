@@ -1,22 +1,22 @@
-﻿using NUnit.Framework;
-using Huygens;
+﻿using Huygens;
+using NUnit.Framework;
 using System;
 
 namespace GroupDocs.Viewer.WebForms.Test
 {
     [TestFixture]
-    public class ViewerControllerTest
+    public class ViewerTest
     {
         [Test]
         public void ViewStatusTest()
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "/../../../src";            
+            string path = AppDomain.CurrentDomain.BaseDirectory + "/../../../src";
             using (var server = new DirectServer(path))
             {
                 var request = new SerialisableRequest
                 {
                     Method = "GET",
-                    RequestUri = "/viewer",
+                    RequestUri = "/viewer",  
                     Content = null
                 };
 
