@@ -19,7 +19,6 @@ namespace GroupDocs.Viewer.WebForms.Test
                     RequestUri = "/viewer",  
                     Content = null
                 };
-
                 var result = server.DirectCall(request);
                 Assert.That(result.StatusCode, Is.EqualTo(200));
             }
