@@ -11,7 +11,7 @@ after_test:
 
     cd OpenCover.4.6.519\tools
 
-    OpenCover.Console.exe -target:nunit3-console.exe -targetargs:"--noheader --framework=net-4.5 --result=..\..\artifacts\coverage\nunit-results.xml ..\..\GroupDocs.Viewer.WebForms.Test\bin\Debug\GroupDocs.Viewer.WebForms.Test.dll" -output:"..\..\artifacts\coverage\results.xml" -register:user -filter:"+[GroupDocs.Viewer.WebForms*]* -[GroupDocs.Viewer.WebForms.Test*]*" -searchdirs:"..\..\GroupDocs.Viewer.WebForms.Test\bin\Debug"
+    OpenCover.Console.exe -target:nunit3-console.exe -targetargs:"--noheader --framework=net-4.5 --result=..\..\artifacts\coverage\nunit-results.xml ..\..\GroupDocs.Viewer.WebForms.Test\bin\Debug\GroupDocs.Total.MVC.Test.dll" -output:"..\..\artifacts\coverage\results.xml" -register:user -filter:"+[GroupDocs.Viewer.WebForms*]* -[GroupDocs.Viewer.WebForms.Test*]*" -searchdirs:"..\..\GroupDocs.Viewer.WebForms.Test\bin\Debug"
 
     cd ..\..
 
