@@ -5,6 +5,7 @@ using GroupDocs.Viewer.Config;
 using GroupDocs.Viewer.Converter.Options;
 using GroupDocs.Viewer.Domain;
 using GroupDocs.Viewer.Domain.Containers;
+using GroupDocs.Viewer.Domain.Image;
 using GroupDocs.Viewer.Domain.Options;
 using GroupDocs.Viewer.Exception;
 using GroupDocs.Viewer.Handler;
@@ -143,7 +144,6 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 {
                     documentGuid = globalConfiguration.Viewer.GetFilesDirectory() + "/" + documentGuid;
                 }
-
                 DocumentInfoContainer documentInfoContainer = new DocumentInfoContainer();
                 // get document info options
                 DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions(documentGuid);
@@ -151,18 +151,28 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 documentInfoOptions.Password = password;
                 // get document info container               
                 documentInfoContainer = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions);
-                List<PageDescriptionEntity> pages = GetPageDescriptionEntities(documentInfoContainer.Pages);
                 LoadDocumentEntity loadDocumentEntity = new LoadDocumentEntity();
-                loadDocumentEntity.SetGuid(documentGuid);
-                foreach (PageDescriptionEntity page in pages)
+                List<string> pagesContent = new List<string>();
+                if (globalConfiguration.Viewer.GetPreloadPageCount() == 0)
                 {
-                    loadDocumentEntity.SetPages(page);
+                    pagesContent = GetAllPagesContent(password, documentGuid);
                 }
+                foreach (PageData page in documentInfoContainer.Pages)
+                {
+                    PageDescriptionEntity pageData = GetPageDescriptionEntities(page);
+                    if (pagesContent.Count > 0)
+                    {
+                        pageData.SetData(pagesContent[page.Number - 1]);
+                    }
+                    loadDocumentEntity.SetPages(pageData);
+                }
+                loadDocumentEntity.SetGuid(documentGuid);
                 // return document description
                 return Request.CreateResponse(HttpStatusCode.OK, loadDocumentEntity);
             }
             catch (System.Exception ex)
             {
+                // set exception message
                 return Request.CreateResponse(HttpStatusCode.OK, new Resources().GenerateException(ex, password));
             }
         }
@@ -176,67 +186,30 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         [Route("loadDocumentPage")]
         public HttpResponseMessage LoadDocumentPage(PostedDataEntity postedData)
         {
+            string password = "";
             try
             {
                 // get/set parameters
                 string documentGuid = postedData.guid;
                 int pageNumber = postedData.page;
-                string password = postedData.password;
-                LoadedPageEntity loadedPage = new LoadedPageEntity();
+                password = postedData.password;
+                // get document info options
+                DocumentInfoContainer documentInfoContainer = new DocumentInfoContainer();
                 // get document info options
                 DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions(documentGuid);
                 // set password for protected document                
                 documentInfoOptions.Password = password;
-                string angle = "0";
-                // set options
-                if (globalConfiguration.Viewer.GetIsHtmlMode())
-                {
-                    HtmlOptions htmlOptions = new HtmlOptions();
-                    htmlOptions.PageNumber = pageNumber;
-                    htmlOptions.CountPagesToRender = 1;
-                    htmlOptions.EmbedResources = true;
-                    // set password for protected document
-                    if (!string.IsNullOrEmpty(password))
-                    {
-                        htmlOptions.Password = password;
-                    }
-                    // get page HTML
-                    loadedPage.pageHtml = this.GetHandler().GetPages(documentGuid, htmlOptions)[0].HtmlContent;
-                    // get page rotation angle
-                    angle = viewerHtmlHandler.GetDocumentInfo(documentGuid, documentInfoOptions).Pages[pageNumber - 1].Angle.ToString();
-                }
-                else
-                {
-                    ImageOptions imageOptions = new ImageOptions();
-                    imageOptions.PageNumber = pageNumber;
-                    imageOptions.CountPagesToRender = 1;
-                    // set password for protected document
-                    if (!string.IsNullOrEmpty(password))
-                    {
-                        imageOptions.Password = password;
-                    }
-
-                    byte[] bytes;
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        this.GetHandler().GetPages(documentGuid, imageOptions)[0].Stream.CopyTo(memoryStream);
-                        bytes = memoryStream.ToArray();
-                    }
-
-                    string encodedImage = Convert.ToBase64String(bytes);
-
-                    loadedPage.pageImage = encodedImage;
-                    // get page rotation angle
-                    angle = viewerImageHandler.GetDocumentInfo(documentGuid, documentInfoOptions).Pages[pageNumber - 1].Angle.ToString();
-                }
-                loadedPage.angle = angle;
+                // get document info container               
+                documentInfoContainer = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions);
+                PageDescriptionEntity page = GetPageDescriptionEntities(documentInfoContainer.Pages[pageNumber - 1]);
+                page.SetData(GetPageContent(documentInfoContainer.Pages[pageNumber - 1], password, documentGuid));
                 // return loaded page object
-                return Request.CreateResponse(HttpStatusCode.OK, loadedPage);
+                return Request.CreateResponse(HttpStatusCode.OK, page);
             }
             catch (System.Exception ex)
             {
                 // set exception message
-                return Request.CreateResponse(HttpStatusCode.OK, new Resources().GenerateException(ex));
+                return Request.CreateResponse(HttpStatusCode.OK, new Resources().GenerateException(ex, password));
             }
         }
 
@@ -400,19 +373,98 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             }
         }
 
-        private static List<PageDescriptionEntity> GetPageDescriptionEntities(List<PageData> containerPages)
+        private PageDescriptionEntity GetPageDescriptionEntities(PageData page)
         {
-            List<PageDescriptionEntity> pages = new List<PageDescriptionEntity>();
-            foreach (PageData page in containerPages)
+            PageDescriptionEntity pageDescriptionEntity = new PageDescriptionEntity();
+            pageDescriptionEntity.number = page.Number;
+            pageDescriptionEntity.angle = page.Angle;
+            pageDescriptionEntity.height = page.Height;
+            pageDescriptionEntity.width = page.Width;
+            return pageDescriptionEntity;
+        }
+
+        private string GetPageContent(PageData page, string password, string documentGuid)
+        {
+            if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
-                PageDescriptionEntity pageDescriptionEntity = new PageDescriptionEntity();
-                pageDescriptionEntity.number = page.Number;
-                pageDescriptionEntity.angle = page.Angle;
-                pageDescriptionEntity.height = page.Height;
-                pageDescriptionEntity.width = page.Width;
-                pages.Add(pageDescriptionEntity);
+                HtmlOptions htmlOptions = new HtmlOptions();
+
+                htmlOptions.PageNumber = page.Number;
+                htmlOptions.CountPagesToRender = 1;
+
+                htmlOptions.EmbedResources = true;
+                // set password for protected document
+                if (!string.IsNullOrEmpty(password))
+                {
+                    htmlOptions.Password = password;
+                }
+                // get page HTML              
+                return this.GetHandler().GetPages(documentGuid, htmlOptions)[0].HtmlContent;
+
             }
-            return pages;
+            else
+            {
+                ImageOptions imageOptions = new ImageOptions();
+                imageOptions.PageNumber = page.Number;
+                imageOptions.CountPagesToRender = 1;
+                // set password for protected document
+                if (!string.IsNullOrEmpty(password))
+                {
+                    imageOptions.Password = password;
+                }
+                byte[] bytes;
+                using (var memoryStream = new MemoryStream())
+                {
+                    this.GetHandler().GetPages(documentGuid, imageOptions)[0].Stream.CopyTo(memoryStream);
+                    bytes = memoryStream.ToArray();
+                }
+                string encodedImage = Convert.ToBase64String(bytes);
+                return encodedImage;
+            }
+        }
+
+        private List<string> GetAllPagesContent(string password, string documentGuid)
+        {
+            List<string> allPages = new List<string>();
+            if (globalConfiguration.Viewer.GetIsHtmlMode())
+            {
+                HtmlOptions htmlOptions = new HtmlOptions();
+                htmlOptions.EmbedResources = true;
+                // set password for protected document
+                if (!string.IsNullOrEmpty(password))
+                {
+                    htmlOptions.Password = password;
+                }
+                // get page HTML              
+                var pages = this.GetHandler().GetPages(documentGuid, htmlOptions);
+                for (int i = 0; i < pages.Count; i++)
+                {
+                    allPages.Add(pages[i].HtmlContent);
+                }
+
+            }
+            else
+            {
+                ImageOptions imageOptions = new ImageOptions();
+                // set password for protected document
+                if (!string.IsNullOrEmpty(password))
+                {
+                    imageOptions.Password = password;
+                }
+                var pages = this.GetHandler().GetPages(documentGuid, imageOptions);
+                for (int i = 0; i < pages.Count; i++)
+                {
+                    byte[] bytes;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        pages[i].Stream.CopyTo(memoryStream);
+                        bytes = memoryStream.ToArray();
+                    }
+                    string encodedImage = Convert.ToBase64String(bytes);
+                    allPages.Add(encodedImage);
+                }
+            }
+            return allPages;
         }
     }
 }
