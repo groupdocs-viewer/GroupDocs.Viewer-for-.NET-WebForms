@@ -54,12 +54,12 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             config.FontDirectories = fontsDirectory;
             if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
-                // initialize Viewer instance for the HTML mode
+                // initialize total instance for the HTML mode
                 viewerHtmlHandler = new ViewerHtmlHandler(config);
             }
             else
             {
-                // initialize Viewer instance for the Image mode
+                // initialize total instance for the Image mode
                 viewerImageHandler = new ViewerImageHandler(config);
             }
         }
@@ -135,38 +135,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             string password = "";
             try
             {
-
-                // get/set parameters
-                string documentGuid = postedData.guid;
-                password = postedData.password;
-                // check if documentGuid contains path or only file name
-                if (!Path.IsPathRooted(documentGuid))
-                {
-                    documentGuid = globalConfiguration.Viewer.GetFilesDirectory() + "/" + documentGuid;
-                }
-                DocumentInfoContainer documentInfoContainer = new DocumentInfoContainer();
-                // get document info options
-                DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions(documentGuid);
-                // set password for protected document                
-                documentInfoOptions.Password = password;
-                // get document info container               
-                documentInfoContainer = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions);
-                LoadDocumentEntity loadDocumentEntity = new LoadDocumentEntity();
-                List<string> pagesContent = new List<string>();
-                if (globalConfiguration.Viewer.GetPreloadPageCount() == 0)
-                {
-                    pagesContent = GetAllPagesContent(password, documentGuid);
-                }
-                foreach (PageData page in documentInfoContainer.Pages)
-                {
-                    PageDescriptionEntity pageData = GetPageDescriptionEntities(page);
-                    if (pagesContent.Count > 0)
-                    {
-                        pageData.SetData(pagesContent[page.Number - 1]);
-                    }
-                    loadDocumentEntity.SetPages(pageData);
-                }
-                loadDocumentEntity.SetGuid(documentGuid);
+                LoadDocumentEntity loadDocumentEntity = LoadDocument(postedData, globalConfiguration.Viewer.GetPreloadPageCount() == 0);
                 // return document description
                 return Request.CreateResponse(HttpStatusCode.OK, loadDocumentEntity);
             }
@@ -360,6 +329,51 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, new Resources().GenerateException(ex));
             }
         }
+
+        [HttpPost]
+        [Route("loadThumbnails")]
+        public LoadDocumentEntity loadThumbnails(PostedDataEntity loadDocumentRequest)
+        {
+            return LoadDocument(loadDocumentRequest, true);
+        }
+
+        private LoadDocumentEntity LoadDocument(PostedDataEntity postedData, bool loadAllPages)
+        {
+            // get/set parameters
+            string documentGuid = postedData.guid;
+            string password = postedData.password;
+            // check if documentGuid contains path or only file name
+            if (!Path.IsPathRooted(documentGuid))
+            {
+                documentGuid = globalConfiguration.Viewer.GetFilesDirectory() + "/" + documentGuid;
+            }
+            DocumentInfoContainer documentInfoContainer;
+            // get document info options
+            DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions(documentGuid);
+            // set password for protected document                
+            documentInfoOptions.Password = password;
+            // get document info container               
+            documentInfoContainer = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions);
+            LoadDocumentEntity loadDocumentEntity = new LoadDocumentEntity();
+            List<string> pagesContent = new List<string>();
+            if (loadAllPages)
+            {
+                pagesContent = GetAllPagesContent(password, documentGuid);
+            }
+            foreach (PageData page in documentInfoContainer.Pages)
+            {
+                PageDescriptionEntity pageData = GetPageDescriptionEntities(page);
+                if (pagesContent.Count > 0)
+                {
+                    pageData.SetData(pagesContent[page.Number - 1]);
+                }
+                loadDocumentEntity.SetPages(pageData);
+            }
+            loadDocumentEntity.SetGuid(documentGuid);
+            // return document description
+            return loadDocumentEntity;
+        }
+
 
         private dynamic GetHandler()
         {
