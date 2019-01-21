@@ -80,3 +80,5 @@ viewer:
   cache: true
   # Set true to enable page rotation saving
   saveRotateState: true
+  # Set false to allow right mouse click
+  enableRightClick: true
