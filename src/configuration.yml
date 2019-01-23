@@ -41,6 +41,8 @@ common:
   # File browser
   # Set false to disable document browse
   browse: true
+  # Set false to disable right mouse click
+  enableRightClick: true
 
 ################################################
 # GroupDocs.Viewer configurations
@@ -80,5 +82,3 @@ viewer:
   cache: true
   # Set true to enable page rotation saving
   saveRotateState: true
-  # Set false to allow right mouse click
-  enableRightClick: true
