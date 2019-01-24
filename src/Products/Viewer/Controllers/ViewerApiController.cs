@@ -5,9 +5,7 @@ using GroupDocs.Viewer.Config;
 using GroupDocs.Viewer.Converter.Options;
 using GroupDocs.Viewer.Domain;
 using GroupDocs.Viewer.Domain.Containers;
-using GroupDocs.Viewer.Domain.Image;
 using GroupDocs.Viewer.Domain.Options;
-using GroupDocs.Viewer.Exception;
 using GroupDocs.Viewer.Handler;
 using System;
 using System.Collections.Generic;
@@ -54,12 +52,12 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             config.FontDirectories = fontsDirectory;
             if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
-                // initialize total instance for the HTML mode
+                // initialize Viewer instance for the HTML mode
                 viewerHtmlHandler = new ViewerHtmlHandler(config);
             }
             else
             {
-                // initialize total instance for the Image mode
+                // initialize Viewer instance for the Image mode
                 viewerImageHandler = new ViewerImageHandler(config);
             }
         }
@@ -70,7 +68,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>List of files and directories</returns>
         [HttpPost]
-        [Route("loadFileTree")]
+       [Route("loadFileTree")]
         public HttpResponseMessage loadFileTree(PostedDataEntity postedData)
         {
             string relDirPath = "";
@@ -129,7 +127,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Document info object</returns>
         [HttpPost]
-        [Route("loadDocumentDescription")]
+       [Route("loadDocumentDescription")]
         public HttpResponseMessage LoadDocumentDescription(PostedDataEntity postedData)
         {
             string password = "";
@@ -152,7 +150,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Document page object</returns>
         [HttpPost]
-        [Route("loadDocumentPage")]
+       [Route("loadDocumentPage")]
         public HttpResponseMessage LoadDocumentPage(PostedDataEntity postedData)
         {
             string password = "";
@@ -188,7 +186,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Document page number to rotate and rotation angle</param>
         /// <returns>Rotated document page object</returns>
         [HttpPost]
-        [Route("rotateDocumentPages")]
+       [Route("rotateDocumentPages")]
         public HttpResponseMessage RotateDocumentPages(PostedDataEntity postedData)
         {
             try
@@ -241,7 +239,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="path">Path of the document to download</param>
         /// <returns>Document stream as attachement</returns>
         [HttpGet]
-        [Route("downloadDocument")]
+       [Route("downloadDocument")]
         public HttpResponseMessage DownloadDocument(string path)
         {
             if (!string.IsNullOrEmpty(path))
@@ -266,7 +264,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Uploaded document object</returns>
         [HttpPost]
-        [Route("uploadDocument")]
+       [Route("uploadDocument")]
         public HttpResponseMessage UploadDocument()
         {
             try
@@ -331,7 +329,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         }
 
         [HttpPost]
-        [Route("loadThumbnails")]
+       [Route("loadThumbnails")]
         public LoadDocumentEntity loadThumbnails(PostedDataEntity loadDocumentRequest)
         {
             return LoadDocument(loadDocumentRequest, true);
@@ -402,16 +400,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
                 HtmlOptions htmlOptions = new HtmlOptions();
-
-                htmlOptions.PageNumber = page.Number;
-                htmlOptions.CountPagesToRender = 1;
-
-                htmlOptions.EmbedResources = true;
-                // set password for protected document
-                if (!string.IsNullOrEmpty(password))
-                {
-                    htmlOptions.Password = password;
-                }
+                SetOptions(htmlOptions, password, page.Number);
                 // get page HTML              
                 return this.GetHandler().GetPages(documentGuid, htmlOptions)[0].HtmlContent;
 
@@ -419,13 +408,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             else
             {
                 ImageOptions imageOptions = new ImageOptions();
-                imageOptions.PageNumber = page.Number;
-                imageOptions.CountPagesToRender = 1;
-                // set password for protected document
-                if (!string.IsNullOrEmpty(password))
-                {
-                    imageOptions.Password = password;
-                }
+                SetOptions(imageOptions, password, page.Number);
                 byte[] bytes;
                 using (var memoryStream = new MemoryStream())
                 {
@@ -443,28 +426,18 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
                 HtmlOptions htmlOptions = new HtmlOptions();
-                htmlOptions.EmbedResources = true;
-                // set password for protected document
-                if (!string.IsNullOrEmpty(password))
-                {
-                    htmlOptions.Password = password;
-                }
+                SetOptions(htmlOptions, password, 0);
                 // get page HTML              
                 var pages = this.GetHandler().GetPages(documentGuid, htmlOptions);
                 for (int i = 0; i < pages.Count; i++)
                 {
                     allPages.Add(pages[i].HtmlContent);
                 }
-
             }
             else
             {
                 ImageOptions imageOptions = new ImageOptions();
-                // set password for protected document
-                if (!string.IsNullOrEmpty(password))
-                {
-                    imageOptions.Password = password;
-                }
+                SetOptions(imageOptions, password, 0);
                 var pages = this.GetHandler().GetPages(documentGuid, imageOptions);
                 for (int i = 0; i < pages.Count; i++)
                 {
@@ -479,6 +452,61 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 }
             }
             return allPages;
+        }
+
+        private void SetOptions(HtmlOptions options, string password, int pageNumber)
+        {
+            Watermark watermark = null;
+            if (!String.IsNullOrEmpty(globalConfiguration.Viewer.GetWatermarkText()))
+            {
+                // Set watermark properties
+                watermark = new Watermark(globalConfiguration.Viewer.GetWatermarkText());
+                watermark.Color = System.Drawing.Color.Blue;
+                watermark.Position = WatermarkPosition.Diagonal;
+                watermark.Width = 100;
+            }
+            options.EmbedResources = true;
+            // set password for protected document
+            if (!string.IsNullOrEmpty(password))
+            {
+                options.Password = password;
+            }
+            if (watermark != null)
+            {
+                options.Watermark = watermark;
+            }
+            if (pageNumber != 0)
+            {
+                options.PageNumber = pageNumber;
+                options.CountPagesToRender = 1;
+            }
+        }
+
+        private void SetOptions(ImageOptions options, string password, int pageNumber)
+        {
+            Watermark watermark = null;
+            if (!String.IsNullOrEmpty(globalConfiguration.Viewer.GetWatermarkText()))
+            {
+                // Set watermark properties
+                watermark = new Watermark(globalConfiguration.Viewer.GetWatermarkText());
+                watermark.Color = System.Drawing.Color.Blue;
+                watermark.Position = WatermarkPosition.Diagonal;
+                watermark.Width = 100;
+            }
+            // set password for protected document
+            if (!string.IsNullOrEmpty(password))
+            {
+                options.Password = password;
+            }
+            if (watermark != null)
+            {
+                options.Watermark = watermark;
+            }
+            if (pageNumber != 0)
+            {
+                options.PageNumber = pageNumber;
+                options.CountPagesToRender = 1;
+            }
         }
     }
 }
