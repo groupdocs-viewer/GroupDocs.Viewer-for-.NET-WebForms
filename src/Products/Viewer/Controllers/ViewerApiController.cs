@@ -159,11 +159,11 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 // get/set parameters
                 string documentGuid = postedData.guid;
                 int pageNumber = postedData.page;
-                password = postedData.password;
+                password = (String.IsNullOrEmpty(postedData.password)) ? null : postedData.password;
                 // get document info options
                 DocumentInfoContainer documentInfoContainer = new DocumentInfoContainer();
                 // get document info options
-                DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions(documentGuid);
+                DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions();
                 // set password for protected document                
                 documentInfoOptions.Password = password;
                 // get document info container               
@@ -339,7 +339,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         {
             // get/set parameters
             string documentGuid = postedData.guid;
-            string password = postedData.password;
+            string password = (String.IsNullOrEmpty(postedData.password)) ? null : postedData.password;
             // check if documentGuid contains path or only file name
             if (!Path.IsPathRooted(documentGuid))
             {
@@ -347,7 +347,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             }
             DocumentInfoContainer documentInfoContainer;
             // get document info options
-            DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions(documentGuid);
+            DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions();
             // set password for protected document                
             documentInfoOptions.Password = password;
             // get document info container               
@@ -399,7 +399,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         {
             if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
-                HtmlOptions htmlOptions = new HtmlOptions();
+                HtmlOptions htmlOptions = new HtmlOptions();                
                 SetOptions(htmlOptions, password, page.Number);
                 // get page HTML              
                 return this.GetHandler().GetPages(documentGuid, htmlOptions)[0].HtmlContent;
