@@ -68,7 +68,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>List of files and directories</returns>
         [HttpPost]
-       [Route("loadFileTree")]
+        [Route("loadFileTree")]
         public HttpResponseMessage loadFileTree(PostedDataEntity postedData)
         {
             string relDirPath = "";
@@ -127,7 +127,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Document info object</returns>
         [HttpPost]
-       [Route("loadDocumentDescription")]
+        [Route("loadDocumentDescription")]
         public HttpResponseMessage LoadDocumentDescription(PostedDataEntity postedData)
         {
             string password = "";
@@ -150,7 +150,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Document page object</returns>
         [HttpPost]
-       [Route("loadDocumentPage")]
+        [Route("loadDocumentPage")]
         public HttpResponseMessage LoadDocumentPage(PostedDataEntity postedData)
         {
             string password = "";
@@ -186,7 +186,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Document page number to rotate and rotation angle</param>
         /// <returns>Rotated document page object</returns>
         [HttpPost]
-       [Route("rotateDocumentPages")]
+        [Route("rotateDocumentPages")]
         public HttpResponseMessage RotateDocumentPages(PostedDataEntity postedData)
         {
             try
@@ -239,7 +239,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="path">Path of the document to download</param>
         /// <returns>Document stream as attachement</returns>
         [HttpGet]
-       [Route("downloadDocument")]
+        [Route("downloadDocument")]
         public HttpResponseMessage DownloadDocument(string path)
         {
             if (!string.IsNullOrEmpty(path))
@@ -264,7 +264,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// <param name="postedData">Post data</param>
         /// <returns>Uploaded document object</returns>
         [HttpPost]
-       [Route("uploadDocument")]
+        [Route("uploadDocument")]
         public HttpResponseMessage UploadDocument()
         {
             try
@@ -329,10 +329,41 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         }
 
         [HttpPost]
-       [Route("loadThumbnails")]
+        [Route("loadThumbnails")]
         public LoadDocumentEntity loadThumbnails(PostedDataEntity loadDocumentRequest)
         {
             return LoadDocument(loadDocumentRequest, true);
+        }
+
+        [HttpPost]
+        [Route("loadPrint")]
+        public HttpResponseMessage loadPrint(PostedDataEntity loadDocumentRequest)
+        {
+            try
+            {
+                LoadDocumentEntity loadPrintDocument = new LoadDocumentEntity();
+                if (Path.GetExtension(loadDocumentRequest.guid) == ".pdf") {
+                    loadPrintDocument = GetPrintPdf(loadDocumentRequest.guid);
+                } else {
+                    loadPrintDocument = LoadDocument(loadDocumentRequest, true);
+                }
+                // return document description
+                return Request.CreateResponse(HttpStatusCode.OK, loadPrintDocument);
+            }
+            catch (System.Exception ex)
+            {
+                // set exception message
+                return Request.CreateResponse(HttpStatusCode.OK, new Resources().GenerateException(ex, loadDocumentRequest.password));
+            }
+        }
+
+        private LoadDocumentEntity GetPrintPdf(string guid)
+        {
+            string pdfPath = globalConfiguration.Viewer.GetFilesDirectory().Replace(AppDomain.CurrentDomain.BaseDirectory, "") + 
+                "/" + Path.GetFileName(guid);
+            LoadDocumentEntity loadDocumentEntity = new LoadDocumentEntity();
+            loadDocumentEntity.SetGuid(pdfPath);
+            return loadDocumentEntity;
         }
 
         private LoadDocumentEntity LoadDocument(PostedDataEntity postedData, bool loadAllPages)
@@ -407,7 +438,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         {
             if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
-                HtmlOptions htmlOptions = new HtmlOptions();                
+                HtmlOptions htmlOptions = new HtmlOptions();
                 SetOptions(htmlOptions, password, page.Number);
                 // get page HTML              
                 return this.GetHandler().GetPages(documentGuid, htmlOptions)[0].HtmlContent;
