@@ -372,12 +372,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             var fileStream = new FileStream(pdfPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             response.Content = new StreamContent(fileStream);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
-            System.Net.Mime.ContentDisposition disposition = new System.Net.Mime.ContentDisposition
-            {
-                FileName = Path.GetFileName(pdfPath),
-                Inline = true
-            };
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");           
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("inline");
             response.Content.Headers.ContentDisposition.FileName = Path.GetFileName(pdfPath);
             return response;
