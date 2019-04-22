@@ -15,9 +15,6 @@
 
 This **document viewer** allows you to view over 50 document formats including Word, Excel, PowerPoint files and many others right in your browser. You can configure it to **view documents as images or HTML5**. [GroupDocs.Viewer for .NET](https://products.groupdocs.com/viewer/net) API  allows you to view any from 50 supported document formats without the need to convert files to PDF and external dependencies.
 
-
-Thanks to powerful and flexible [GroupDocs.Viewer for .NET](https://products.groupdocs.com/viewer/net) API, over 50 document formats are supported.
-
 **Note** Without a license application will run in trial mode, purchase [GroupDocs.Viewer for .NET license](https://purchase.groupdocs.com/order-online-step-1-of-8.aspx) or request [GroupDocs.Viewer for .NET temporary license](https://purchase.groupdocs.com/temporary-license).
 
 
