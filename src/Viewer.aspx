@@ -4,6 +4,7 @@
     GroupDocs.Viewer.WebForms.Products.Common.Config.GlobalConfiguration config = new GroupDocs.Viewer.WebForms.Products.Common.Config.GlobalConfiguration();
 %>
 <!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8" />
     <title>Viewer for .NET WebForms</title>
@@ -20,3 +21,4 @@
     <script type="text/javascript" src="resources/viewer/vendor.js"></script>
     <script type="text/javascript" src="resources/viewer/main.js"></script>
 </body>
+</html>
