@@ -4,43 +4,19 @@
     GroupDocs.Viewer.WebForms.Products.Common.Config.GlobalConfiguration config = new GroupDocs.Viewer.WebForms.Products.Common.Config.GlobalConfiguration();
 %>
 <!DOCTYPE html>
-<html>
 <head>
     <meta charset="utf-8" />
     <title>Viewer for .NET WebForms</title>
-    <link type="text/css" rel="stylesheet" href="/resources/common/css/all.min.css">
-    <link type="text/css" rel="stylesheet" href="/resources/common/css/v4-shims.min.css">
-    <link type="text/css" rel="stylesheet" href="/resources/common/css/swiper.min.css">
-    <link type="text/css" rel="stylesheet" href="/resources/common/css/circle-progress.css" />
-    <link type="text/css" rel="stylesheet" href="/resources/viewer/css/viewer.css" />
-    <link type="text/css" rel="stylesheet" href="/resources/viewer/css/viewer.mobile.css" />
-    <link type="text/css" rel="stylesheet" href="/resources/viewer/css/viewer-dark.css" />
-    <script type="text/javascript" src="/resources/common/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/resources/common/js/swiper.min.js"></script>
-    <script type="text/javascript" src="resources/common/js/es6-promise.auto.js"></script>
-    <script type="text/javascript" src="/resources/viewer/js/viewer.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="resources/viewer/assets/css/all.min.css" />
 </head>
 <body>
-    <div id="element"></div>
-    <script type="text/javascript">
-        $('#element').viewer({
-            applicationPath: 'http://<%= config.Server.HostAddress%>:<%=config.Server.HttpPort%>/viewer',
-            defaultDocument: '<%=config.Viewer.GetDefaultDocument()%>',
-            htmlMode: <%= config.Viewer.GetIsHtmlMode().ToString().ToLowerInvariant()%>,
-            preloadPageCount: <%= config.Viewer.GetPreloadPageCount()%>,
-            zoom : <%= config.Viewer.GetIsZoom().ToString().ToLowerInvariant()%>,
-            pageSelector: <%= config.Common.isPageSelector.ToString().ToLowerInvariant()%>,
-            search: <%= config.Viewer.GetIsSearch().ToString().ToLowerInvariant()%>,
-            thumbnails: <%= config.Viewer.GetIsThumbnails().ToString().ToLowerInvariant()%>,
-            rotate: <%= config.Viewer.GetIsRotate().ToString().ToLowerInvariant()%>,
-            download: <%= config.Common.isDownload.ToString().ToLowerInvariant()%>,
-            upload: <%= config.Common.isUpload.ToString().ToLowerInvariant()%>,
-            print: <%= config.Common.isPrint.ToString().ToLowerInvariant()%>,
-            browse: <%= config.Common.isBrowse.ToString().ToLowerInvariant()%>,
-            rewrite: <%= config.Common.isRewrite.ToString().ToLowerInvariant() %>,
-            saveRotateState: <%= config.Viewer.GetSaveRotateState().ToString().ToLowerInvariant() %>,
-            enableRightClick: <%= config.Common.enableRightClick.ToString().ToLowerInvariant()%>
-            });
-    </script>
+    <gd-viewer-angular-root></gd-viewer-angular-root>
+    <script type="text/javascript" src="resources/viewer/runtime.js"></script>
+    <script type="text/javascript" src="resources/viewer/es2015-polyfills.js" nomodule></script>
+    <script type="text/javascript" src="resources/viewer/polyfills.js"></script>
+    <script type="text/javascript" src="resources/viewer/styles.js"></script>
+    <script type="text/javascript" src="resources/viewer/scripts.js"></script>
+    <script type="text/javascript" src="resources/viewer/vendor.js"></script>
+    <script type="text/javascript" src="resources/viewer/main.js"></script>
 </body>
-</html>
