@@ -152,7 +152,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             catch (System.Exception ex)
             {
                 // set exception message
-                return Request.CreateResponse(HttpStatusCode.OK, new Resources().GenerateException(ex, password));
+                return Request.CreateResponse(HttpStatusCode.Forbidden, new Resources().GenerateException(ex, password));
             }
         }
 
@@ -188,7 +188,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             catch (System.Exception ex)
             {
                 // set exception message
-                return Request.CreateResponse(HttpStatusCode.OK, new Resources().GenerateException(ex, password));
+                return Request.CreateResponse(HttpStatusCode.Forbidden, new Resources().GenerateException(ex, password));
             }
         }
 
@@ -543,6 +543,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 options.PageNumber = pageNumber;
                 options.CountPagesToRender = 1;
             }
+            options.CellsOptions.ShowGridLines = true;
         }
 
         private void SetOptions(ImageOptions options, string password, int pageNumber)
@@ -570,6 +571,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 options.PageNumber = pageNumber;
                 options.CountPagesToRender = 1;
             }
+            options.CellsOptions.ShowGridLines = true;
         }
     }
 }
