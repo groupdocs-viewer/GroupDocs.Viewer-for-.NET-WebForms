@@ -15,11 +15,5 @@
   "bugs": {
     "url": "https://github.com/groupdocs-viewer/GroupDocs.Viewer-for-.NET-WebForms/issues"
   },
-  "homepage": "https://github.com/groupdocs-viewer/GroupDocs.Viewer-for-.NET-WebForms#readme",
-  "dependencies": {
-    "@groupdocs.examples.angular/viewer": "^0.1.5"
-  },
-  "devDependencies": {
-    "gulp": "^4.0.0"
-  }
+  "homepage": "https://github.com/groupdocs-viewer/GroupDocs.Viewer-for-.NET-WebForms#readme"
 }
