@@ -34,7 +34,7 @@ namespace GroupDocs.Viewer.WebForms.Test
                 var request = new SerialisableRequest
                 {
                     Method = "POST",
-                    RequestUri = "/viewer/loadfiletree",
+                    RequestUri = "/loadfiletree",
                     Content = null,
                     Headers = new Dictionary<string, string>{
                         { "Content-Type", "application/json"}
