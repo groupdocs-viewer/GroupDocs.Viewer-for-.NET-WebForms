@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Viewer for .NET MVC</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="resources/viewer/favicon.ico" />
 </head>
 <body>
     <client-root></client-root>
