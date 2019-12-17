@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Viewer for .NET MVC</title>
+    <title>Viewer for .NET Web Forms</title>
     <link rel="icon" type="image/x-icon" href="resources/viewer/favicon.ico" />
 </head>
 <body>
