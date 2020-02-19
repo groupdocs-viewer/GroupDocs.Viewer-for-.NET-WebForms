@@ -29,11 +29,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Resources
                     int number = i + 1;
                     string newFileName = Path.GetFileNameWithoutExtension(fileName) + "-Copy(" + number + ")." + Path.GetExtension(fileName);
                     resultFileName = Path.Combine(directory, newFileName);
-                    if (File.Exists(resultFileName))
-                    {
-                        continue;
-                    }
-                    else
+                    if (!File.Exists(resultFileName))
                     {
                         break;
                     }

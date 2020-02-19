@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace GroupDocs.Viewer.WebForms.Products.Common.Config
 {
     public class ConfigurationValuesGetter
     {
-        private dynamic Configuration;
+        private readonly dynamic Configuration;
 
         public ConfigurationValuesGetter(dynamic configuration)
         {

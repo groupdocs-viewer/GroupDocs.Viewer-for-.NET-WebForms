@@ -27,9 +27,10 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
     public class ViewerApiController : ApiController
     {
 
-        private static Common.Config.GlobalConfiguration globalConfiguration;
-        private static ViewerHtmlHandler viewerHtmlHandler = null;
-        private static ViewerImageHandler viewerImageHandler = null;
+        private static Common.Config.GlobalConfiguration globalConfiguration = new Common.Config.GlobalConfiguration();
+
+        public static ViewerHtmlHandler ViewerHtmlHandler { get; set; }
+        public static ViewerImageHandler ViewerImageHandler { get; set; }
 
         /// <summary>
         /// Constructor
@@ -37,16 +38,17 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         public ViewerApiController()
         {
             // Check if filesDirectory is relative or absolute path           
-            globalConfiguration = new Common.Config.GlobalConfiguration();
-            GroupDocs.Viewer.License license = new GroupDocs.Viewer.License();
+            License license = new License();
             license.SetLicense(globalConfiguration.Application.LicensePath);
             // create viewer application configuration
-            ViewerConfig config = new ViewerConfig();
-            config.StoragePath = globalConfiguration.Viewer.GetFilesDirectory();
-            config.EnableCaching = globalConfiguration.Viewer.GetCache();
-            config.ForcePasswordValidation = true;
+            ViewerConfig config = new ViewerConfig
+            {
+                StoragePath = globalConfiguration.Viewer.GetFilesDirectory(),
+                EnableCaching = globalConfiguration.Viewer.GetCache(),
+                ForcePasswordValidation = true
+            };
             List<string> fontsDirectory = new List<string>();
-            if (!String.IsNullOrEmpty(globalConfiguration.Viewer.GetFontsDirectory()))
+            if (!string.IsNullOrEmpty(globalConfiguration.Viewer.GetFontsDirectory()))
             {
                 fontsDirectory.Add(globalConfiguration.Viewer.GetFontsDirectory());
             }
@@ -54,12 +56,12 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
                 // initialize Viewer instance for the HTML mode
-                viewerHtmlHandler = new ViewerHtmlHandler(config);
+                ViewerHtmlHandler = new ViewerHtmlHandler(config);
             }
             else
             {
                 // initialize Viewer instance for the Image mode
-                viewerImageHandler = new ViewerImageHandler(config);
+                ViewerImageHandler = new ViewerImageHandler(config);
             }
         }
 
@@ -173,13 +175,13 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 int pageNumber = postedData.page;
                 password = (String.IsNullOrEmpty(postedData.password)) ? null : postedData.password;
                 // get document info options
-                DocumentInfoContainer documentInfoContainer = new DocumentInfoContainer();
-                // get document info options
-                DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions();
-                // set password for protected document                
-                documentInfoOptions.Password = password;
+                DocumentInfoOptions documentInfoOptions = new DocumentInfoOptions
+                {
+                    // set password for protected document                
+                    Password = password
+                };
                 // get document info container               
-                documentInfoContainer = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions);
+                DocumentInfoContainer documentInfoContainer = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions);
                 PageDescriptionEntity page = GetPageDescriptionEntities(documentInfoContainer.Pages[pageNumber - 1]);
                 page.SetData(GetPageContent(documentInfoContainer.Pages[pageNumber - 1], password, documentGuid));
                 // return loaded page object
@@ -220,19 +222,17 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                     RotatedPageEntity rotatedPage = new RotatedPageEntity();
                     int pageNumber = pages[i];
                     RotatePageOptions rotateOptions = new RotatePageOptions(pageNumber, angle);
-                    // perform page rotation
-                    string resultAngle = "0";
                     // set password for protected document
                     if (!string.IsNullOrEmpty(password))
                     {
                         rotateOptions.Password = password;
                     }
                     this.GetHandler().RotatePage(documentGuid, rotateOptions);
-                    resultAngle = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions).Pages[pageNumber - 1].Angle.ToString();
+                    string resultAngle = this.GetHandler().GetDocumentInfo(documentGuid, documentInfoOptions).Pages[pageNumber - 1].Angle.ToString();
                     // add rotated page number
                     rotatedPage.SetPageNumber(pageNumber);
                     // add rotated page angle
-                    rotatedPage.SetAngle(resultAngle);
+                    rotatedPage.SetAngle(string.IsNullOrEmpty(resultAngle) ? "0" : resultAngle);
                     // add rotated page object into resulting list                   
                     rotatedPages.Add(rotatedPage);
                 }
@@ -438,13 +438,13 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
 
         private dynamic GetHandler()
         {
-            if (viewerHtmlHandler != null)
+            if (ViewerHtmlHandler != null)
             {
-                return viewerHtmlHandler;
+                return ViewerHtmlHandler;
             }
             else
             {
-                return viewerImageHandler;
+                return ViewerImageHandler;
             }
         }
 
