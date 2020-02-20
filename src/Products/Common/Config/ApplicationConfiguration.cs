@@ -1,8 +1,5 @@
 ﻿using GroupDocs.Viewer.WebForms.Products.Common.Util.Parser;
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,7 +11,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
     /// </summary>
     public class ApplicationConfiguration
     {
-        public string LicensePath = "Licenses";
+        public string LicensePath { get; set; } = "Licenses";
 
         /// <summary>
         /// Get license path from the application configuration section of the web.config
