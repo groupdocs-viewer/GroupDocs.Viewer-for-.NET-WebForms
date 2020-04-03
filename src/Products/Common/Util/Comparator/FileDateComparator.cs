@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -17,16 +18,16 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Util.Comparator
         /// <returns></returns>
         public int Compare(string x, string y)
         {
-            string strExt1 = File.GetCreationTime(x).ToString(CultureInfo.InvariantCulture);
-            string strExt2 = File.GetCreationTime(y).ToString(CultureInfo.InvariantCulture);
+            var date1 = File.GetCreationTime(x);
+            var date2 = File.GetCreationTime(y);
 
-            if (strExt1.Equals(strExt2))
+            if (DateTime.Equals(date1, date2))
             {
-                return x.CompareTo(y.ToLower(CultureInfo.InvariantCulture));
+                return string.Compare(y, x, false, CultureInfo.InvariantCulture);
             }
             else
             {
-                return strExt1.CompareTo(strExt2.ToLower(CultureInfo.InvariantCulture));
+                return DateTime.Compare(date2, date1);
             }
         }
     }
