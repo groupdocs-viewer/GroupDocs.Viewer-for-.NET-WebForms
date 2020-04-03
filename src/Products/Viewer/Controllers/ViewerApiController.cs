@@ -31,7 +31,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ViewerApiController : ApiController
     {
-        private static Common.Config.GlobalConfiguration globalConfiguration;
+        private static readonly Common.Config.GlobalConfiguration globalConfiguration = new Common.Config.GlobalConfiguration();
 
         public static readonly ConcurrentDictionary<string, object> KeyLockerMap =
             new ConcurrentDictionary<string, object>();
@@ -41,9 +41,6 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// </summary>
         public ViewerApiController()
         {
-            // Check if filesDirectory is relative or absolute path           
-            globalConfiguration = new Common.Config.GlobalConfiguration();
-
             List<string> fontsDirectory = new List<string>();
             if (!string.IsNullOrEmpty(globalConfiguration.Viewer.GetFontsDirectory()))
             {
