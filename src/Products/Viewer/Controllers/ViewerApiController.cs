@@ -31,7 +31,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ViewerApiController : ApiController
     {
-        private static readonly Common.Config.GlobalConfiguration globalConfiguration = new Common.Config.GlobalConfiguration();
+        private static Common.Config.GlobalConfiguration globalConfiguration;
 
         public static readonly ConcurrentDictionary<string, object> KeyLockerMap =
             new ConcurrentDictionary<string, object>();
@@ -41,6 +41,9 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
         /// </summary>
         public ViewerApiController()
         {
+            // Check if filesDirectory is relative or absolute path           
+            globalConfiguration = new Common.Config.GlobalConfiguration();
+
             List<string> fontsDirectory = new List<string>();
             if (!string.IsNullOrEmpty(globalConfiguration.Viewer.GetFontsDirectory()))
             {
@@ -104,8 +107,9 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 FileInfo fileInfo = new FileInfo(file);
                 // check if current file/folder is hidden
                 if (!(cacheFolderName.Equals(Path.GetFileName(file)) ||
-                    fileInfo.Attributes.HasFlag(FileAttributes.Hidden) ||
-                    Path.GetFileName(file).Equals(Path.GetFileName(globalConfiguration.Viewer.GetFilesDirectory()))))
+                      Path.GetFileName(file).StartsWith(".") ||
+                      fileInfo.Attributes.HasFlag(FileAttributes.Hidden) ||
+                      Path.GetFileName(file).Equals(Path.GetFileName(globalConfiguration.Viewer.GetFilesDirectory()))))
                 {
                     FileDescriptionEntity fileDescription = new FileDescriptionEntity
                     {
@@ -466,6 +470,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
             if (globalConfiguration.Viewer.GetIsHtmlMode())
             {
                 HtmlViewOptions htmlViewOptions = HtmlViewOptions.ForEmbeddedResources(_ => new MemoryStream());
+                htmlViewOptions.SpreadsheetOptions.TextOverflowMode = TextOverflowMode.HideText;
                 SetWatermarkOptions(htmlViewOptions);
 
                 if (pageNumber < 0)
@@ -544,6 +549,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 if (globalConfiguration.Viewer.GetIsHtmlMode())
                 {
                     ViewOptions viewOptions = HtmlViewOptions.ForEmbeddedResources(pageStreamFactory);
+                    viewOptions.SpreadsheetOptions.TextOverflowMode = TextOverflowMode.HideText;
 
                     viewer.View(viewOptions);
                 }
@@ -632,6 +638,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 if (globalConfiguration.Viewer.GetIsHtmlMode())
                 {
                     ViewOptions viewOptions = HtmlViewOptions.ForEmbeddedResources(pageStreamFactory);
+                    viewOptions.SpreadsheetOptions.TextOverflowMode = TextOverflowMode.HideText;
 
                     viewer.View(viewOptions, page.Number);
 
