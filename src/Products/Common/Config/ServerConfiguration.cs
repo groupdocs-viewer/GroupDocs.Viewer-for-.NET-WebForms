@@ -10,8 +10,8 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
     /// </summary>
     public class ServerConfiguration : ConfigurationSection
     {
-        public int HttpPort = 8080;
-        public string HostAddress = "localhost";
+        private readonly int HttpPort = 8080;
+        private readonly string HostAddress = "localhost";
         private readonly NameValueCollection serverConfiguration = (NameValueCollection)System.Configuration.ConfigurationManager.GetSection("serverConfiguration");
 
         /// <summary>
