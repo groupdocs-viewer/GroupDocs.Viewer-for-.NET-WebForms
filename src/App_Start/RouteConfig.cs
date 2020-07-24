@@ -15,7 +15,7 @@ namespace GroupDocs.Viewer.WebForms
              "Viewer",
              "",
              "~/Viewer.aspx"
-         );
+            );
         }
     }
 }

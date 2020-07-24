@@ -8,10 +8,10 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Util.Parser
     public class YamlParser
     {
         private static string YamlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "configuration.yml");
-        private readonly dynamic ConfiguationData;
+        private dynamic ConfiguationData;
 
         public YamlParser()
-        {           
+        {
             if (File.Exists(YamlPath))
             {
                 using (var reader = new StringReader(File.ReadAllText(YamlPath)))
@@ -23,17 +23,19 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Util.Parser
                         .JsonCompatible()
                         .Build();
 
-                    ConfiguationData = serializer.Serialize(yamlObject);                     
+                    this.ConfiguationData = serializer.Serialize(yamlObject);
                 }
-            }             
+            }
         }
 
-        public dynamic GetConfiguration(string configurationSectionName) {
+        public dynamic GetConfiguration(string configurationSectionName)
+        {
             dynamic productConfiguration = null;
-            if (ConfiguationData != null)
+            if (this.ConfiguationData != null)
             {
-                productConfiguration = JsonConvert.DeserializeObject(ConfiguationData)[configurationSectionName];
-            } 
+                productConfiguration = JsonConvert.DeserializeObject(this.ConfiguationData)[configurationSectionName];
+            }
+
             return productConfiguration;
         }
     }

@@ -1,33 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace GroupDocs.Viewer.WebForms.Products.Common.Util.Comparator
 {
     /// <summary>
-    /// FileDateComparator
+    /// FileDateComparator.
     /// </summary>
     public class FileDateComparator : IComparer<string>
     {
         /// <summary>
-        /// Compare file creation dates
+        /// Compare file creation dates.
         /// </summary>
-        /// <param name="x">string</param>
-        /// <param name="y">string</param>
+        /// <param name="x">string.</param>
+        /// <param name="y">string.</param>
         /// <returns></returns>
         public int Compare(string x, string y)
         {
-            var date1 = File.GetCreationTime(x);
-            var date2 = File.GetCreationTime(y);
+            string strExt1 = File.GetCreationTime(x).ToString();
+            string strExt2 = File.GetCreationTime(y).ToString();
 
-            if (DateTime.Equals(date1, date2))
+            if (strExt1.Equals(strExt2))
             {
-                return string.Compare(y, x, false, CultureInfo.InvariantCulture);
+                return x.CompareTo(y);
             }
             else
             {
-                return DateTime.Compare(date2, date1);
+                return strExt1.CompareTo(strExt2);
             }
         }
     }

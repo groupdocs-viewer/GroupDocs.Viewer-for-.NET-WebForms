@@ -3,24 +3,24 @@
 namespace GroupDocs.Viewer.WebForms.Products.Common.Config
 {
     /// <summary>
-    /// Global configuration
+    /// Global configuration.
     /// </summary>
     public class GlobalConfiguration
     {
-        public ServerConfiguration Server { get; set; }
-        public ApplicationConfiguration Application { get; set; }
-        public CommonConfiguration Common { get; set; }
-        public ViewerConfiguration Viewer { get; set; }
+        public ServerConfiguration Server;
+        public ApplicationConfiguration Application;
+        public CommonConfiguration Common;
+        public ViewerConfiguration Viewer;
 
         /// <summary>
-        /// Get all configurations
+        /// Get all configurations.
         /// </summary>
         public GlobalConfiguration()
-        {            
-            Server = new ServerConfiguration();
-            Application = new ApplicationConfiguration();
-            Common = new CommonConfiguration();
-            Viewer = new ViewerConfiguration();
+        {
+            this.Server = new ServerConfiguration();
+            this.Application = new ApplicationConfiguration();
+            this.Viewer = new ViewerConfiguration();
+            this.Common = new CommonConfiguration();
         }
     }
 }

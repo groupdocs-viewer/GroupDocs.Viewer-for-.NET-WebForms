@@ -1,24 +1,22 @@
 ﻿using GroupDocs.Viewer.WebForms.Products.Common.Entity.Web;
-using System;
 using System.IO;
-using System.Web;
 
 namespace GroupDocs.Viewer.WebForms.Products.Common.Resources
 {
     /// <summary>
-    /// Resources
+    /// Provides methods for generating uploaded files names and exception entities.
     /// </summary>
     public class Resources
     {
         /// <summary>
-        /// Get free file name for uploaded file if such file already exists
+        /// Get free file name for uploaded file if such file already exists.
         /// </summary>
-        /// <param name="directory">Directory where to search files</param>
-        /// <param name="fileName">Uploaded file name</param>
+        /// <param name="directory">Directory where to search files.</param>
+        /// <param name="fileName">Uploaded file name.</param>
         /// <returns></returns>
         public static string GetFreeFileName(string directory, string fileName)
         {
-            string resultFileName = "";
+            string resultFileName = string.Empty;
             try
             {
                 // get all files from the directory
@@ -29,7 +27,11 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Resources
                     int number = i + 1;
                     string newFileName = Path.GetFileNameWithoutExtension(fileName) + "-Copy(" + number + ")." + Path.GetExtension(fileName);
                     resultFileName = Path.Combine(directory, newFileName);
-                    if (!File.Exists(resultFileName))
+                    if (File.Exists(resultFileName))
+                    {
+                        continue;
+                    }
+                    else
                     {
                         break;
                     }
@@ -39,18 +41,20 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Resources
             {
                 throw e;
             }
+
             return resultFileName;
         }
 
         /// <summary>
-        /// Generate exception
+        /// Generate exception.
         /// </summary>
-        /// <param name="ex">Exception</param>
-        /// <returns>ExceptionEntity</returns>
-        public ExceptionEntity GenerateException(System.Exception ex)
+        /// <param name="ex">Exception.</param>
+        /// <returns>ExceptionEntity.</returns>
+        public static ExceptionEntity GenerateException(System.Exception ex)
         {
             // Initiate Exception entity
             ExceptionEntity exceptionEntity = new ExceptionEntity();
+
             // set exception data
             exceptionEntity.message = ex.Message;
             exceptionEntity.exception = ex;
@@ -58,22 +62,24 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Resources
         }
 
         /// <summary>
-        /// Generate exception for password error
+        /// Generate exception for password error.
         /// </summary>
-        /// <param name="ex">Exception</param>
-        /// <param name="password">string</param>
-        /// <returns>ExceptionEntity</returns>
-        public ExceptionEntity GenerateException(System.Exception ex, String password)
+        /// <param name="ex">Exception.</param>
+        /// <param name="password">string.</param>
+        /// <returns>ExceptionEntity.</returns>
+        public static ExceptionEntity GenerateException(System.Exception ex, string password)
         {
             // Initiate exception
             ExceptionEntity exceptionEntity = new ExceptionEntity();
+
             // Check if exception message contains password and password is empty
-            if (ex.Message.Contains("password") && String.IsNullOrEmpty(password))
+            if (ex.Message.Contains("password") && string.IsNullOrEmpty(password))
             {
                 exceptionEntity.message = "Password Required";
             }
+
             // Check if exception contains password and password is set
-            else if (ex.Message.Contains("password") && !String.IsNullOrEmpty(password))
+            else if (ex.Message.Contains("password") && !string.IsNullOrEmpty(password))
             {
                 exceptionEntity.message = "Incorrect password";
             }
@@ -82,6 +88,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Resources
                 exceptionEntity.message = ex.Message;
                 exceptionEntity.exception = ex;
             }
+
             return exceptionEntity;
         }
     }

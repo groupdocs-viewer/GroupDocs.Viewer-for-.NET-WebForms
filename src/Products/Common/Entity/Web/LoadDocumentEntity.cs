@@ -3,19 +3,34 @@ using System.Collections.Generic;
 
 namespace GroupDocs.Viewer.WebForms.Products.Common.Entity.Web
 {
+    /// <summary>
+    /// DTO-class, represents document properties and its pages collection.
+    /// </summary>
     public class LoadDocumentEntity
     {
-        ///Document Guid
+        /// <summary>
+        /// Document absolute path.
+        /// </summary>
         [JsonProperty]
         private string guid;
 
-        ///list of pages        
+        /// <summary>
+        /// Collection of the document pages with their data.
+        /// </summary>
         [JsonProperty]
         private List<PageDescriptionEntity> pages = new List<PageDescriptionEntity>();
 
-        ///Document Guid
+        /// <summary>
+        /// Document print allowed flag.
+        /// </summary>
         [JsonProperty]
         private bool printAllowed = true;
+
+        /// <summary>
+        /// Document show grid lines flag (for Excel files). 
+        /// </summary>
+        [JsonProperty]
+        private bool showGridLines = true;
 
         public void SetPrintAllowed(bool allowed)
         {
@@ -27,6 +42,16 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Entity.Web
             return this.printAllowed;
         }
 
+        public void SetShowGridLines(bool show)
+        {
+            this.showGridLines = show;
+        }
+
+        public bool GetShowGridLines()
+        {
+            return this.showGridLines;
+        }
+
         public void SetGuid(string guid)
         {
             this.guid = guid;
@@ -34,7 +59,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Entity.Web
 
         public string GetGuid()
         {
-            return guid;
+            return this.guid;
         }
 
         public void SetPages(PageDescriptionEntity page)
@@ -44,7 +69,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Entity.Web
 
         public List<PageDescriptionEntity> GetPages()
         {
-            return pages;
+            return this.pages;
         }
     }
 }

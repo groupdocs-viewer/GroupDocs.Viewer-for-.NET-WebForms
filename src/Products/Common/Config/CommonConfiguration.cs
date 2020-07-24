@@ -38,6 +38,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
         /// Constructor
         /// </summary>
         public CommonConfiguration()
+
         {
             YamlParser parser = new YamlParser();
             dynamic configuration = parser.GetConfiguration("common");
