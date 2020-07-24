@@ -22,11 +22,11 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Util.Comparator
 
             if (strExt1.Equals(strExt2))
             {
-                return x.CompareTo(y);
+                return string.CompareOrdinal(x, y);
             }
             else
             {
-                return strExt1.CompareTo(strExt2);
+                return string.CompareOrdinal(strExt1, strExt2);
             }
         }
     }

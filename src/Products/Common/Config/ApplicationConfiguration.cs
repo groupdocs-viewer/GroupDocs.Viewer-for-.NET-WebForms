@@ -11,7 +11,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
     /// </summary>
     public class ApplicationConfiguration
     {
-        public readonly string LicensePath = "Licenses";
+        public string LicensePath { get; set; } = "Licenses";
 
         /// <summary>
         /// Get license path from the application configuration section of the web.config.
