@@ -1,7 +1,7 @@
 ﻿namespace GroupDocs.Viewer.WebForms.Products.Common.Util.Directory
 {
     /// <summary>
-    /// IDirectoryUtils
+    /// IDirectoryUtils.
     /// </summary>
     public interface IDirectoryUtils
     {

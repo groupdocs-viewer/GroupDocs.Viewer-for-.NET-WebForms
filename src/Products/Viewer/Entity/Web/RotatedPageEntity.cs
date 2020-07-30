@@ -1,10 +1,9 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace GroupDocs.Viewer.WebForms.Products.Viewer.Entity.Web
 {
     /// <summary>
-    /// RotatedPageEntity
+    /// RotatedPageEntity.
     /// </summary>
     public class RotatedPageEntity
     {
@@ -14,13 +13,14 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Entity.Web
         [JsonProperty]
         private string angle;
 
-        public void SetPageNumber(int number) {
+        public void SetPageNumber(int number)
+        {
             this.pageNumber = number;
         }
 
         public int GetPageNumber()
         {
-            return pageNumber;
+            return this.pageNumber;
         }
 
         public void SetAngle(string angle)
@@ -30,7 +30,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Entity.Web
 
         public string GetAngle()
         {
-            return angle;
+            return this.angle;
         }
     }
 }

@@ -7,14 +7,14 @@ using System.Linq;
 namespace GroupDocs.Viewer.WebForms.Products.Common.Config
 {
     /// <summary>
-    /// Application configuration
+    /// Application configuration.
     /// </summary>
     public class ApplicationConfiguration
     {
         public string LicensePath { get; set; } = "Licenses";
 
         /// <summary>
-        /// Get license path from the application configuration section of the web.config
+        /// Get license path from the application configuration section of the web.config.
         /// </summary>
         public ApplicationConfiguration()
         {
@@ -22,10 +22,10 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
             dynamic configuration = parser.GetConfiguration("application");
             ConfigurationValuesGetter valuesGetter = new ConfigurationValuesGetter(configuration);
             string license = valuesGetter.GetStringPropertyValue("licensePath");
-            if (String.IsNullOrEmpty(license))
+            if (string.IsNullOrEmpty(license))
             {
-                string[] files = System.IO.Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LicensePath), "*.lic");
-                LicensePath = Path.Combine(LicensePath, files[0]);
+                string[] files = System.IO.Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, this.LicensePath), "*.lic");
+                this.LicensePath = Path.Combine(this.LicensePath, files[0]);
             }
             else
             {
@@ -37,18 +37,19 @@ namespace GroupDocs.Viewer.WebForms.Products.Common.Config
                         Directory.CreateDirectory(Path.GetDirectoryName(license));
                     }
                 }
-                LicensePath = license;
-                if (!File.Exists(LicensePath))
-                {                    
+
+                this.LicensePath = license;
+                if (!File.Exists(this.LicensePath))
+                {
                     Debug.WriteLine("License file path is incorrect, launched in trial mode");
-                    LicensePath = "";
+                    this.LicensePath = string.Empty;
                 }
             }
         }
 
         private static bool IsFullPath(string path)
         {
-            return !String.IsNullOrWhiteSpace(path)
+            return !string.IsNullOrWhiteSpace(path)
                 && path.IndexOfAny(System.IO.Path.GetInvalidPathChars().ToArray()) == -1
                 && Path.IsPathRooted(path)
                 && !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
