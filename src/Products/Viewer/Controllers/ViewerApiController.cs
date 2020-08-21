@@ -1,5 +1,4 @@
-﻿using GroupDocs.Viewer.Caching;
-using GroupDocs.Viewer.Exceptions;
+﻿using GroupDocs.Viewer.Exceptions;
 using GroupDocs.Viewer.Options;
 using GroupDocs.Viewer.Results;
 using GroupDocs.Viewer.WebForms.Products.Common.Entity.Web;
@@ -17,7 +16,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -297,7 +295,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Controllers
                 path = Path.Combine(path, resourceName);
 
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-                var fileStream = new FileStream(path, FileMode.Open);
+                var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 response.Content = new StreamContent(fileStream);
                 var fileName = Path.GetFileName(path);
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue(MimeMapping.GetMimeMapping(fileName));
