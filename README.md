@@ -25,11 +25,12 @@ In order to demonstrate GroupDocs.Viewer for Java reach and powerful features we
 | Family                      | Formats                                                                                                                            |
 | --------------------------- |:---------------------------------------------------------------------------------------------------------------------------------- |
 | Portable Document Format    | `PDF`                                                                                                                              |
-| Microsoft Word              | `DOC`, `DOCM` , `DOCX`, `DOT`, `DOTM`, `DOTX`                                                                                      |
-| Microsoft Excel             | `XLS`, `XLSB`, `XLSM`, `XLSX`, `XLT`, `XLTM`, `XLTX`                                                                               |
+| Microsoft Word              | `DOC`, `DOCM` , `DOCX`, `DOT`, `DOTM`, `DOTX`, `RTF`, `TXT`                                                                        |
+| Microsoft Excel             | `XLS`, `XLSB`, `XLSM`, `XLSX`, `XLT`, `XLTM`, `XLTX`,`XLAM`                                                                        |
 | Microsoft PowerPoint        | `PPT`, `POT`, `POTM`, `POTX`, `PPS`, `PPSM`, `PPSX`, `PPTM`, `PPTX`                                                                |
 | Microsoft Visio             | `VSD`, `VDW`, `VDX`, `VSDX`, `VSS`, `VST`, `VSX`, `VTX`                                                                            |
-| Microsoft Project           | `MPP`, `MPT`                                                                                                                       |
+| Microsoft Project           | `MPP`, `MPT`, `MPX`                                                                                                                |
+| Microsoft One               | `ONE`                                                                                                                              |
 | Microsoft Outlook           | `EML`, `EMLX`, `MSG`                                                                                                               |
 | OpenDocument Formats        | `ODT`, `ODP`, `ODS`, `OTT`                                                                                                         |
 | Plain Text File             | `TXT`                                                                                                                              |
@@ -55,7 +56,7 @@ In order to demonstrate GroupDocs.Viewer for Java reach and powerful features we
 - Easily switchable colour theme (create your own colour theme in 5 minutes)
 - Responsive design
 - Mobile support (open application on any mobile device)
-- Support over 50 documents and image formats including Word, Excel, PowerPoint 
+- Support over 170+ documents and image formats including Word, Excel, PowerPoint 
 - View in HTML or image modes
 - Fully customizable navigation panel
 - Open password protected documents
