@@ -13,15 +13,15 @@
 </head>
 <body>
     <client-root></client-root>
-    <script src="resources/viewer/runtime-es2015.js" type="module"></script>
-    <script src="resources/viewer/runtime-es5.js" nomodule></script>
-    <script src="resources/viewer/polyfills-es2015.js" type="module"></script>
-    <script src="resources/viewer/polyfills-es5.js" nomodule></script>
-    <script src="resources/viewer/styles-es2015.js" type="module"></script>
-    <script src="resources/viewer/styles-es5.js" nomodule></script>
-    <script src="resources/viewer/vendor-es2015.js" type="module"></script>
-    <script src="resources/viewer/vendor-es5.js" nomodule></script>
-    <script src="resources/viewer/main-es2015.js" type="module"></script>
-    <script src="resources/viewer/main-es5.js" nomodule></script>
+    <script src="/viewer/resources/viewer/runtime-es2015.js" type="module"></script>
+    <script src="/viewer/resources/viewer/runtime-es5.js" nomodule></script>
+    <script src="/viewer/resources/viewer/polyfills-es2015.js" type="module"></script>
+    <script src="/viewer/resources/viewer/polyfills-es5.js" nomodule></script>
+    <script src="/viewer/resources/viewer/styles-es2015.js" type="module"></script>
+    <script src="/viewer/resources/viewer/styles-es5.js" nomodule></script>
+    <script src="/viewer/resources/viewer/vendor-es2015.js" type="module"></script>
+    <script src="/viewer/resources/viewer/vendor-es5.js" nomodule></script>
+    <script src="/viewer/resources/viewer/main-es2015.js" type="module"></script>
+    <script src="/viewer/resources/viewer/main-es5.js" nomodule></script>
 </body>
 </html>
