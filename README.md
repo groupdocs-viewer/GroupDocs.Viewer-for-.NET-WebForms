@@ -127,6 +127,15 @@ For all methods above you can adjust settings in `configuration.yml`. By default
 | **`saveRotateState`**  | Boolean |      `true`       | If enabled it will save chages made by rotating individual pages to same file.                                                               |
 | **`watermarkText`**    | String  |                   | Text which will be used as a watermark                                                                                                       |
 
+## Troubleshooting
+### How to set custom baseURL
+**Note:** currently baseURL is fetched from address bar
+In order to set custom baseURL add forRoot parameter at [app.module.ts](https://github.com/groupdocs-viewer/GroupDocs.Viewer-for-.NET-WebForms/blob/master/src/client/apps/viewer/src/app/app.module.ts#L10).
+
+**Example:**
+```bash
+ ViewerModule.forRoot("http://localhost:8080");
+ ```
 
 ## License
 The MIT License (MIT). 

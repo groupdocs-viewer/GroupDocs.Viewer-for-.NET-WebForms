@@ -7,7 +7,7 @@ import { ViewerModule } from "@groupdocs.examples.angular/viewer";
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule,
-    ViewerModule.forRoot("http://localhost:8080")],
+    ViewerModule],
   providers: [],
   bootstrap: [AppComponent]
 })
