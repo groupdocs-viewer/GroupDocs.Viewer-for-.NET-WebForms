@@ -13,6 +13,7 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Cache
 
         private readonly GroupDocs.Viewer.Viewer viewer;
         private readonly HtmlViewOptions viewOptions;
+        private readonly PdfViewOptions pdfViewOptions;
         private readonly ViewInfoOptions viewInfoOptions;
         private static readonly Common.Config.GlobalConfiguration globalConfiguration = new Common.Config.GlobalConfiguration();
 
@@ -22,12 +23,34 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Cache
             this.filePath = filePath;
             this.viewer = new GroupDocs.Viewer.Viewer(filePath, loadOptions);
             this.viewOptions = this.CreateHtmlViewOptions(pageNumber, newAngle);
+            this.pdfViewOptions = this.CreatePdfViewOptions();
             this.viewInfoOptions = ViewInfoOptions.FromHtmlViewOptions(this.viewOptions);
         }
 
         public GroupDocs.Viewer.Viewer GetViewer()
         {
             return this.viewer;
+        }
+
+        private PdfViewOptions CreatePdfViewOptions()
+        {
+            PdfViewOptions pdfViewOptions = new PdfViewOptions(
+                () =>
+                {
+                    string fileName = "f.pdf";
+                    string cacheFilePath = this.cache.GetCacheFilePath(fileName);
+
+                    return File.Create(cacheFilePath);
+                });
+
+            pdfViewOptions.SpreadsheetOptions = SpreadsheetOptions.ForOnePagePerSheet();
+            pdfViewOptions.SpreadsheetOptions.TextOverflowMode = TextOverflowMode.HideText;
+            pdfViewOptions.SpreadsheetOptions.RenderGridLines = globalConfiguration.Viewer.GetShowGridLines();
+            pdfViewOptions.SpreadsheetOptions.RenderHeadings = true;
+
+            SetWatermarkOptions(pdfViewOptions);
+
+            return pdfViewOptions;
         }
 
         private HtmlViewOptions CreateHtmlViewOptions(int passedPageNumber = -1, int newAngle = 0)
@@ -121,6 +144,24 @@ namespace GroupDocs.Viewer.WebForms.Products.Viewer.Cache
                     this.viewer.View(this.viewOptions, missingPages);
                 }
             }
+        }
+
+        public Stream GetPdf()
+        {
+            string cacheKey = "f.pdf";
+
+            if (!this.cache.Contains(cacheKey))
+            {
+                using (new CrossProcessLock(this.filePath))
+                {
+                    if (!this.cache.Contains(cacheKey))
+                    {
+                        this.viewer.View(this.pdfViewOptions);
+                    }
+                }
+            }
+
+            return this.cache.GetValue<Stream>(cacheKey);
         }
 
         public void Dispose()
